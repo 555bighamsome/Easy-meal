@@ -18,6 +18,14 @@ export default function ShoppingList() {
   const [purchasePlans, setPurchasePlans] = useState<PurchasePlan[]>([]);
   const [selectedPlan, setSelectedPlan] = useState<PurchasePlan>();
   const [showPlanModal, setShowPlanModal] = useState(false);
+  const [expandedCategories, setExpandedCategories] = useState<Record<string, boolean>>({
+    vegetable: true,
+    meat: true,
+    seafood: true,
+    egg: true,
+    seasoning: true,
+    other: true
+  });
 
   // 获取URL参数中的菜谱ID
   useEffect(() => {
@@ -68,6 +76,74 @@ export default function ShoppingList() {
     const newList = [...shoppingList];
     newList[index].checked = !newList[index].checked;
     setShoppingList(newList);
+
+    // 添加触觉反馈
+    Taro.vibrateShort({ type: 'light' });
+  };
+
+  // 全选/取消全选
+  const toggleCheckAll = () => {
+    const allChecked = shoppingList.every((item) => item.checked);
+    const newList = shoppingList.map((item) => ({
+      ...item,
+      checked: !allChecked
+    }));
+    setShoppingList(newList);
+
+    Taro.vibrateShort({ type: 'medium' });
+    Taro.showToast({
+      title: allChecked ? '已取消全选' : '已全选',
+      icon: 'none',
+      duration: 1000
+    });
+  };
+
+  // 切换分类展开/折叠
+  const toggleCategory = (category: string) => {
+    setExpandedCategories((prev) => ({
+      ...prev,
+      [category]: !prev[category]
+    }));
+  };
+
+  // 长按复制食材名称
+  const handleLongPress = (itemName: string) => {
+    Taro.setClipboardData({
+      data: itemName,
+      success: () => {
+        Taro.showToast({
+          title: '已复制到剪贴板',
+          icon: 'success',
+          duration: 1500
+        });
+      }
+    });
+  };
+
+  // 清除已勾选项
+  const clearChecked = () => {
+    const uncheckedItems = shoppingList.filter((item) => !item.checked);
+    if (uncheckedItems.length === shoppingList.length) {
+      Taro.showToast({
+        title: '没有已勾选的项目',
+        icon: 'none'
+      });
+      return;
+    }
+
+    Taro.showModal({
+      title: '确认清除',
+      content: `是否清除 ${shoppingList.length - uncheckedItems.length} 项已勾选的食材？`,
+      success: (res) => {
+        if (res.confirm) {
+          setShoppingList(uncheckedItems);
+          Taro.showToast({
+            title: '已清除',
+            icon: 'success'
+          });
+        }
+      }
+    });
   };
 
   // 一键购齐
@@ -211,30 +287,67 @@ export default function ShoppingList() {
 
           {/* 详细清单 */}
           <View className="list-section">
-            <Text className="section-title">详细清单</Text>
-            <Text className="section-subtitle">Detailed List</Text>
+            <View className="section-header-with-actions">
+              <View>
+                <Text className="section-title">详细清单</Text>
+                <Text className="section-subtitle">Detailed List</Text>
+              </View>
+              <View className="list-actions">
+                <View className="action-btn" onClick={toggleCheckAll}>
+                  <Text className="action-text">全选</Text>
+                </View>
+                {shoppingList.some((item) => item.checked) && (
+                  <View className="action-btn" onClick={clearChecked}>
+                    <Text className="action-text">清除已选</Text>
+                  </View>
+                )}
+              </View>
+            </View>
 
             <View className="list-card card mt-md">
               {Object.entries(categorizedList).map(([category, items]) => {
                 if (items.length === 0) return null;
 
+                const isExpanded = expandedCategories[category];
+                const checkedCount = items.filter((i) => i.checked).length;
+
                 return (
                   <View key={category} className="category-section">
-                    <Text className="category-title">{categoryNames[category]}</Text>
+                    <View
+                      className="category-header"
+                      onClick={() => toggleCategory(category)}
+                    >
+                      <View className="category-header-left">
+                        <Text className={`category-arrow ${isExpanded ? 'category-arrow-open' : ''}`}>
+                          ▶
+                        </Text>
+                        <Text className="category-title">{categoryNames[category]}</Text>
+                        <Text className="category-count">
+                          {items.length}项
+                          {checkedCount > 0 && ` · ${checkedCount}已选`}
+                        </Text>
+                      </View>
+                    </View>
 
-                    {items.map((item, index) => {
+                    {isExpanded && items.map((item, index) => {
                       const globalIndex = shoppingList.findIndex(
                         (i) => i.ingredient.id === item.ingredient.id
                       );
 
                       return (
-                        <View key={item.ingredient.id} className="list-item">
+                        <View
+                          key={item.ingredient.id}
+                          className={`list-item ${item.checked ? 'list-item-checked' : ''}`}
+                          onLongPress={() => handleLongPress(item.ingredient.name)}
+                        >
                           <View className="list-item-left">
-                            <Checkbox
-                              checked={item.checked}
-                              color="#7C8B6F"
-                              onChange={() => toggleCheck(globalIndex)}
-                            />
+                            <View className="checkbox-wrapper">
+                              <Checkbox
+                                checked={item.checked}
+                                color="#7C8B6F"
+                                onChange={() => toggleCheck(globalIndex)}
+                              />
+                            </View>
                             <View className="item-info">
                               <Text
                                 className={`item-name ${item.checked ? 'item-checked' : ''}`}

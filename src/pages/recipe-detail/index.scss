@@ -13,11 +13,32 @@
   position: relative;
   width: 100%;
   height: 500rpx;
+  overflow: hidden;
 }
 
 .hero-img {
   width: 100%;
   height: 100%;
+  animation: zoomIn 0.6s var(--ease-out);
+}
+
+@keyframes zoomIn {
+  from {
+    transform: scale(1.1);
+  }
+  to {
+    transform: scale(1);
+  }
+}
+
+.hero-gradient {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 60%;
+  background: linear-gradient(to top, rgba(0, 0, 0, 0.7) 0%, rgba(0, 0, 0, 0.3) 50%, transparent 100%);
+  pointer-events: none;
 }
 
 .hero-overlay {
@@ -26,23 +47,82 @@
   left: 0;
   right: 0;
   padding: var(--spacing-lg);
-  background: linear-gradient(to top, rgba(0, 0, 0, 0.6), transparent);
+  z-index: 1;
+  animation: slideUp 0.6s var(--ease-out);
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(30rpx);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 .hero-title {
   display: block;
   font-size: 48rpx;
-  font-weight: 500;
+  font-weight: 600;
   color: #ffffff;
   margin-bottom: 8rpx;
-  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+  text-shadow: 0 4rpx 12rpx rgba(0, 0, 0, 0.4);
+  letter-spacing: -0.5px;
 }
 
 .hero-subtitle {
   display: block;
   font-size: 24rpx;
-  color: rgba(255, 255, 255, 0.9);
-  letter-spacing: 0.5px;
+  color: rgba(255, 255, 255, 0.95);
+  letter-spacing: 1px;
+  text-shadow: 0 2rpx 8rpx rgba(0, 0, 0, 0.3);
+}
+
+/* 顶部操作按钮 */
+.hero-actions {
+  position: absolute;
+  top: var(--spacing-lg);
+  right: var(--spacing-lg);
+  display: flex;
+  gap: var(--spacing-sm);
+  z-index: 2;
+  animation: fadeInRight 0.6s var(--ease-out);
+}
+
+@keyframes fadeInRight {
+  from {
+    opacity: 0;
+    transform: translateX(20rpx);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+.action-icon {
+  width: 72rpx;
+  height: 72rpx;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(10rpx);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4rpx 16rpx rgba(0, 0, 0, 0.15);
+  cursor: pointer;
+  transition: all var(--duration-normal) var(--ease-out);
+}
+
+.action-icon:active {
+  transform: scale(0.9);
+  box-shadow: 0 2rpx 8rpx rgba(0, 0, 0, 0.2);
+}
+
+.icon-text {
+  font-size: 36rpx;
 }
 
 /* 信息卡片 */
@@ -59,12 +139,30 @@
   padding: var(--spacing-lg);
   text-align: center;
   box-shadow: var(--shadow-sm);
+  border: 2rpx solid var(--color-border-light);
+  transition: all var(--duration-normal) var(--ease-out);
+  animation: fadeInUp 0.5s var(--ease-out) backwards;
+}
+
+.info-card:nth-child(1) { animation-delay: 0.1s; }
+.info-card:nth-child(2) { animation-delay: 0.2s; }
+.info-card:nth-child(3) { animation-delay: 0.3s; }
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20rpx);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 .info-value {
   display: block;
   font-size: 40rpx;
-  font-weight: 500;
+  font-weight: 600;
   color: var(--color-text-primary);
   margin-bottom: 8rpx;
 }
@@ -72,17 +170,45 @@
 .info-label {
   font-size: 22rpx;
   color: var(--color-text-tertiary);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+/* 标签 */
+.tags-section {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--spacing-sm);
+  margin-bottom: var(--spacing-lg);
+  animation: fadeInUp 0.5s var(--ease-out) 0.4s backwards;
+}
+
+.tag {
+  padding: 12rpx 24rpx;
+  background: linear-gradient(135deg, rgba(124, 139, 111, 0.1) 0%, rgba(168, 184, 159, 0.12) 100%);
+  border: 2rpx solid var(--color-secondary);
+  border-radius: var(--radius-full);
+  transition: all var(--duration-fast);
+}
+
+.tag-text {
+  font-size: 24rpx;
+  color: var(--color-secondary);
+  font-weight: 500;
 }
 
 /* 描述 */
 .description {
   margin-bottom: var(--spacing-lg);
+  padding: var(--spacing-md);
+  animation: fadeInUp 0.5s var(--ease-out) 0.5s backwards;
 }
 
 .description-text {
   font-size: 28rpx;
   color: var(--color-text-secondary);
-  line-height: 1.8;
+  line-height: 2;
+  text-align: justify;
 }
 
 /* 营养信息 */
@@ -161,38 +287,100 @@
 
 .step-item {
   padding: var(--spacing-md);
+  cursor: pointer;
+  transition: all var(--duration-normal) var(--ease-out);
+  animation: slideInFromBottom 0.4s var(--ease-out) backwards;
+  position: relative;
+  overflow: hidden;
+}
+
+.step-item:nth-child(1) { animation-delay: 0.1s; }
+.step-item:nth-child(2) { animation-delay: 0.15s; }
+.step-item:nth-child(3) { animation-delay: 0.2s; }
+.step-item:nth-child(4) { animation-delay: 0.25s; }
+.step-item:nth-child(5) { animation-delay: 0.3s; }
+
+@keyframes slideInFromBottom {
+  from {
+    opacity: 0;
+    transform: translateY(30rpx);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.step-item:active {
+  transform: scale(0.98);
+}
+
+.step-completed {
+  background-color: rgba(124, 139, 111, 0.05);
+  border-color: var(--color-secondary);
 }
 
 .step-header {
   display: flex;
   align-items: center;
-  gap: var(--spacing-md);
+  justify-content: space-between;
   margin-bottom: var(--spacing-md);
 }
 
+.step-header-left {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-md);
+}
+
 .step-number {
-  width: 48rpx;
-  height: 48rpx;
+  width: 56rpx;
+  height: 56rpx;
   border-radius: 50%;
-  background-color: var(--color-secondary);
+  background: var(--gradient-primary);
   color: #ffffff;
   display: flex;
   align-items: center;
   justify-content: center;
   font-size: 24rpx;
-  font-weight: 500;
+  font-weight: 600;
+  box-shadow: 0 4rpx 12rpx rgba(124, 139, 111, 0.25);
+  transition: all var(--duration-normal) var(--ease-spring);
+}
+
+.step-number-completed {
+  background: var(--color-secondary);
+  transform: scale(1.1) rotate(360deg);
+  font-size: 28rpx;
 }
 
 .step-duration {
   font-size: 22rpx;
   color: var(--color-text-tertiary);
+  background-color: rgba(0, 0, 0, 0.04);
+  padding: 6rpx 12rpx;
+  border-radius: var(--radius-full);
+}
+
+.step-tap-hint {
+  font-size: 20rpx;
+  color: var(--color-text-tertiary);
+  opacity: 0.6;
 }
 
 .step-description {
   font-size: 28rpx;
   color: var(--color-text-primary);
-  line-height: 1.8;
+  line-height: 2;
   margin-bottom: var(--spacing-sm);
+  transition: all var(--duration-normal);
+  text-align: justify;
+}
+
+.step-description-completed {
+  color: var(--color-text-tertiary);
+  text-decoration: line-through;
+  opacity: 0.7;
 }
 
 .step-tips {

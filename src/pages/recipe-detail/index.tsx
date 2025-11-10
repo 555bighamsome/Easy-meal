@@ -7,6 +7,8 @@ import './index.scss';
 
 export default function RecipeDetail() {
   const [recipe, setRecipe] = useState<Recipe>();
+  const [completedSteps, setCompletedSteps] = useState<Set<number>>(new Set());
+  const [isFavorite, setIsFavorite] = useState(false);
 
   useEffect(() => {
     const instance = Taro.getCurrentInstance();
@@ -16,9 +18,57 @@ export default function RecipeDetail() {
       const found = mockRecipes.find((r) => r.id === recipeId);
       if (found) {
         setRecipe(found);
+        // 从本地存储读取收藏状态
+        const favorites = Taro.getStorageSync('favorites') || [];
+        setIsFavorite(favorites.includes(recipeId));
       }
     }
   }, []);
+
+  // 切换步骤完成状态
+  const toggleStepComplete = (stepNumber: number) => {
+    setCompletedSteps((prev) => {
+      const newSet = new Set(prev);
+      if (newSet.has(stepNumber)) {
+        newSet.delete(stepNumber);
+      } else {
+        newSet.add(stepNumber);
+      }
+      return newSet;
+    });
+    Taro.vibrateShort({ type: 'light' });
+  };
+
+  // 切换收藏状态
+  const toggleFavorite = () => {
+    if (!recipe) return;
+
+    const favorites = Taro.getStorageSync('favorites') || [];
+    const newFavorites = isFavorite
+      ? favorites.filter((id: string) => id !== recipe.id)
+      : [...favorites, recipe.id];
+
+    Taro.setStorageSync('favorites', newFavorites);
+    setIsFavorite(!isFavorite);
+
+    Taro.showToast({
+      title: isFavorite ? '已取消收藏' : '已收藏',
+      icon: 'success',
+      duration: 1500
+    });
+  };
+
+  // 分享菜谱
+  const handleShare = () => {
+    Taro.showShareMenu({
+      withShareTicket: true
+    });
+    Taro.showToast({
+      title: '点击右上角分享',
+      icon: 'none',
+      duration: 2000
+    });
+  };
 
   if (!recipe) {
     return (
@@ -34,9 +84,20 @@ export default function RecipeDetail() {
         {/* 顶部大图 */}
         <View className="hero-image">
           <Image src={recipe.image} mode="aspectFill" className="hero-img" />
+          <View className="hero-gradient" />
           <View className="hero-overlay">
             <Text className="hero-title">{recipe.name}</Text>
             <Text className="hero-subtitle">{recipe.nameEn}</Text>
+          </View>
+
+          {/* 顶部操作按钮 */}
+          <View className="hero-actions">
+            <View className="action-icon" onClick={toggleFavorite}>
+              <Text className="icon-text">{isFavorite ? '❤️' : '🤍'}</Text>
+            </View>
+            <View className="action-icon" onClick={handleShare}>
+              <Text className="icon-text">📤</Text>
+            </View>
           </View>
         </View>
 
@@ -61,10 +122,23 @@ export default function RecipeDetail() {
             </View>
           </View>
 
+          {/* 标签 */}
+          {recipe.tags && recipe.tags.length > 0 && (
+            <View className="tags-section">
+              {recipe.tags.map((tag, index) => (
+                <View key={index} className="tag">
+                  <Text className="tag-text">{tag}</Text>
+                </View>
+              ))}
+            </View>
+          )}
+
           {/* 描述 */}
-          <View className="description">
-            <Text className="description-text">{recipe.description}</Text>
-          </View>
+          {recipe.description && (
+            <View className="description card">
+              <Text className="description-text">{recipe.description}</Text>
+            </View>
+          )}
 
           {/* 营养信息 */}
           <View className="nutrition card">
@@ -112,24 +186,38 @@ export default function RecipeDetail() {
             <Text className="section-subtitle">Cooking Steps</Text>
 
             <View className="steps-list mt-md">
-              {recipe.steps.map((step) => (
-                <View key={step.step} className="step-item card">
-                  <View className="step-header">
-                    <View className="step-number">{step.step}</View>
-                    {step.duration && (
-                      <Text className="step-duration">⏱ {step.duration}分钟</Text>
+              {recipe.steps.map((step) => {
+                const isCompleted = completedSteps.has(step.step);
+                return (
+                  <View
+                    key={step.step}
+                    className={`step-item card ${isCompleted ? 'step-completed' : ''}`}
+                    onClick={() => toggleStepComplete(step.step)}
+                  >
+                    <View className="step-header">
+                      <View className="step-header-left">
+                        <View className={`step-number ${isCompleted ? 'step-number-completed' : ''}`}>
+                          {isCompleted ? '✓' : step.step}
+                        </View>
+                        {step.duration && (
+                          <Text className="step-duration">⏱ {step.duration}分钟</Text>
+                        )}
+                      </View>
+                      <Text className="step-tap-hint">点击标记完成</Text>
+                    </View>
+
+                    <Text className={`step-description ${isCompleted ? 'step-description-completed' : ''}`}>
+                      {step.description}
+                    </Text>
+
+                    {step.tips && (
+                      <View className="step-tips">
+                        <Text className="step-tips-text">💡 {step.tips}</Text>
+                      </View>
                     )}
                   </View>
-
-                  <Text className="step-description">{step.description}</Text>
-
-                  {step.tips && (
-                    <View className="step-tips">
-                      <Text className="step-tips-text">💡 {step.tips}</Text>
-                    </View>
-                  )}
-                </View>
-              ))}
+                );
+              })}
             </View>
           </View>
         </View>

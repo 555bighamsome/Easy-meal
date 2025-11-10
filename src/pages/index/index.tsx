@@ -5,22 +5,75 @@ import { MoodType, Recipe } from '../../types';
 import { mockRecipes } from '../../data/recipes';
 import MoodSelector from '../../components/MoodSelector';
 import RecipeCard from '../../components/RecipeCard';
+import RecipeFilter from '../../components/RecipeFilter';
 import './index.scss';
+
+interface FilterOptions {
+  difficulty?: 'easy' | 'medium' | 'hard';
+  maxTime?: number;
+  searchText?: string;
+}
 
 export default function Index() {
   const [selectedMood, setSelectedMood] = useState<MoodType>();
   const [selectedRecipes, setSelectedRecipes] = useState<Recipe[]>([]);
+  const [filterOptions, setFilterOptions] = useState<FilterOptions>({});
 
-  // 根据心情筛选菜谱
+  // 综合筛选菜谱
   const filteredRecipes = useMemo(() => {
-    if (!selectedMood) return [];
-    return mockRecipes.filter((recipe) => recipe.mood.includes(selectedMood));
-  }, [selectedMood]);
+    let recipes = mockRecipes;
+
+    // 1. 按心情筛选
+    if (selectedMood) {
+      recipes = recipes.filter((recipe) => recipe.mood.includes(selectedMood));
+    }
+
+    // 2. 按难度筛选
+    if (filterOptions.difficulty) {
+      recipes = recipes.filter((recipe) => recipe.difficulty === filterOptions.difficulty);
+    }
+
+    // 3. 按时间筛选
+    if (filterOptions.maxTime !== undefined) {
+      recipes = recipes.filter((recipe) => recipe.cookTime <= filterOptions.maxTime!);
+    }
+
+    // 4. 按搜索文本筛选
+    if (filterOptions.searchText) {
+      const searchLower = filterOptions.searchText.toLowerCase();
+      recipes = recipes.filter((recipe) => {
+        // 搜索菜谱名称
+        if (recipe.name.toLowerCase().includes(searchLower)) return true;
+        if (recipe.nameEn.toLowerCase().includes(searchLower)) return true;
+
+        // 搜索食材
+        const hasIngredient = recipe.ingredients.some(ing =>
+          ing.name.toLowerCase().includes(searchLower)
+        );
+        if (hasIngredient) return true;
+
+        // 搜索标签
+        const hasTag = recipe.tags?.some(tag =>
+          tag.toLowerCase().includes(searchLower)
+        );
+        if (hasTag) return true;
+
+        return false;
+      });
+    }
+
+    return recipes;
+  }, [selectedMood, filterOptions]);
 
   // 处理心情选择
   const handleMoodSelect = (mood: MoodType) => {
     setSelectedMood(mood);
     setSelectedRecipes([]);
+  };
+
+  // 处理筛选条件变化
+  const handleFilterChange = (filters: FilterOptions) => {
+    setFilterOptions(filters);
   };
 
   // 选择/取消选择菜谱
@@ -62,6 +115,11 @@ export default function Index() {
 
           {/* 心情选择器 */}
           <MoodSelector onSelect={handleMoodSelect} selectedMood={selectedMood} />
+
+          {/* 筛选器 - 在选择心情后显示 */}
+          {selectedMood && (
+            <RecipeFilter onFilterChange={handleFilterChange} />
+          )}
 
           {/* 推荐菜谱 */}
           {selectedMood && (
