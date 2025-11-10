@@ -177,7 +177,7 @@ export default function Index() {
       {selectedRecipes.length > 0 && (
         <View className="bottom-bar">
           <View className="bottom-bar-content">
-            <View>
+            <View className="bottom-bar-info">
               <Text className="bottom-bar-title">已选 {selectedRecipes.length} 道菜</Text>
               <Text className="bottom-bar-subtitle">
                 约 {selectedRecipes.reduce((sum, r) => sum + r.cookTime, 0)} 分钟

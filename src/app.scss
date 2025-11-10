@@ -1,235 +1,352 @@
 /**
- * 全局样式 - 简约高级设计系统
+ * 全局样式 - Apple 风格设计系统
+ * 灵感来源：iOS Human Interface Guidelines
  */
 
-/* 重置默认样式 - WXSS不支持*选择器，直接应用到page */
+/* 重置默认样式 */
 page {
   box-sizing: border-box;
   margin: 0;
   padding: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Hiragino Sans GB',
-    'Microsoft YaHei', sans-serif;
+  font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'SF Pro Text', 'PingFang SC', 
+    'Hiragino Sans GB', 'Microsoft YaHei', sans-serif;
   font-size: 32rpx;
-  line-height: 1.6;
-  color: #1a1a1a;
-  background-color: #fafafa;
+  line-height: 1.47;
+  color: #000000;
+  background: #ffffff;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
-/* 设计系统变量 - 高级版 */
+/* 设计系统变量 - Apple Style */
 :root {
-  /* 颜色系统 - 更精致的色彩 */
-  --color-primary: #1a1a1a;
-  --color-secondary: #7c8b6f; /* 橄榄绿 */
-  --color-accent: #a8b89f; /* 浅橄榄绿 */
+  /* === 色彩系统 === */
+  /* iOS 系统颜色 */
+  --color-label: rgba(0, 0, 0, 0.85);           /* Label (主文字) */
+  --color-secondary-label: rgba(60, 60, 67, 0.60);  /* Secondary Label */
+  --color-tertiary-label: rgba(60, 60, 67, 0.30);   /* Tertiary Label */
+  --color-quaternary-label: rgba(60, 60, 67, 0.18); /* Quaternary Label */
+  
+  /* 背景颜色 */
+  --color-system-background: #ffffff;            /* System Background */
+  --color-secondary-background: #f2f2f7;         /* Secondary Background */
+  --color-tertiary-background: #ffffff;          /* Tertiary Background */
+  --color-grouped-background: #f2f2f7;           /* Grouped Background */
+  
+  /* 分隔符 */
+  --color-separator: rgba(60, 60, 67, 0.29);     /* Separator */
+  --color-opaque-separator: #c6c6c8;             /* Opaque Separator */
+  
+  /* 品牌色 - 橄榄绿 (类似 Health 应用的绿色) */
+  --color-tint: #34c759;                         /* iOS Green */
+  --color-tint-custom: #7c8b6f;                  /* Custom Olive Green */
+  
+  /* 填充色 */
+  --color-fill: rgba(120, 120, 128, 0.20);       /* Fill */
+  --color-secondary-fill: rgba(120, 120, 128, 0.16);
+  --color-tertiary-fill: rgba(118, 118, 128, 0.12);
+  --color-quaternary-fill: rgba(116, 116, 128, 0.08);
 
-  /* 背景渐变 - 微妙的层次感 */
-  --color-bg: #fafafa;
-  --color-bg-secondary: #f5f5f5;
-  --color-card: #ffffff;
-  --color-card-hover: #fcfcfc;
+  /* === 间距系统 (遵循 8pt 网格) === */
+  --spacing-2: 4rpx;
+  --spacing-4: 8rpx;
+  --spacing-8: 16rpx;
+  --spacing-12: 24rpx;
+  --spacing-16: 32rpx;
+  --spacing-20: 40rpx;
+  --spacing-24: 48rpx;
+  --spacing-32: 64rpx;
+  --spacing-40: 80rpx;
+  --spacing-48: 96rpx;
+  --spacing-64: 128rpx;
 
-  /* 边框和分割线 */
-  --color-border: rgba(0, 0, 0, 0.06);
-  --color-border-light: rgba(0, 0, 0, 0.04);
-  --color-divider: rgba(0, 0, 0, 0.08);
+  /* === 圆角系统 === */
+  --radius-small: 8rpx;         /* Small elements */
+  --radius-medium: 12rpx;       /* Buttons, Cards */
+  --radius-large: 16rpx;        /* Large cards */
+  --radius-xlarge: 20rpx;       /* Hero cards */
+  --radius-full: 9999rpx;       /* Pills */
 
-  /* 文字层次 - 更细腻的透明度 */
-  --color-text-primary: rgba(26, 26, 26, 0.92);
-  --color-text-secondary: rgba(60, 60, 60, 0.75);
-  --color-text-tertiary: rgba(120, 120, 120, 0.55);
-  --color-text-disabled: rgba(160, 160, 160, 0.4);
+  /* === 阴影系统 (极致细腻) === */
+  --shadow-1: 0 1rpx 3rpx rgba(0, 0, 0, 0.04);
+  --shadow-2: 0 2rpx 8rpx rgba(0, 0, 0, 0.06);
+  --shadow-3: 0 4rpx 16rpx rgba(0, 0, 0, 0.08);
+  --shadow-4: 0 8rpx 32rpx rgba(0, 0, 0, 0.10);
+  --shadow-5: 0 16rpx 48rpx rgba(0, 0, 0, 0.12);
 
-  /* 蒙版和遮罩 */
-  --color-overlay: rgba(0, 0, 0, 0.4);
-  --color-overlay-light: rgba(0, 0, 0, 0.2);
+  /* === 模糊效果 === */
+  --blur-small: 20rpx;
+  --blur-medium: 40rpx;
+  --blur-large: 80rpx;
 
-  /* 品牌色渐变 */
-  --gradient-primary: linear-gradient(135deg, #7c8b6f 0%, #9aa88c 100%);
-  --gradient-card: linear-gradient(180deg, #ffffff 0%, #fafafa 100%);
-
-  /* 间距系统 (8pt网格) */
-  --spacing-xs: 8rpx;
-  --spacing-sm: 16rpx;
-  --spacing-md: 24rpx;
-  --spacing-lg: 32rpx;
-  --spacing-xl: 48rpx;
-  --spacing-2xl: 64rpx;
-  --spacing-3xl: 96rpx;
-
-  /* 圆角系统 */
-  --radius-xs: 6rpx;
-  --radius-sm: 12rpx;
-  --radius-md: 16rpx;
-  --radius-lg: 24rpx;
-  --radius-xl: 32rpx;
-  --radius-full: 9999rpx;
-
-  /* 阴影系统 - 更自然的光影 */
-  --shadow-xs: 0 2rpx 8rpx rgba(0, 0, 0, 0.04);
-  --shadow-sm: 0 4rpx 12rpx rgba(0, 0, 0, 0.06), 0 2rpx 4rpx rgba(0, 0, 0, 0.02);
-  --shadow-md: 0 8rpx 24rpx rgba(0, 0, 0, 0.08), 0 4rpx 8rpx rgba(0, 0, 0, 0.04);
-  --shadow-lg: 0 16rpx 40rpx rgba(0, 0, 0, 0.12), 0 8rpx 16rpx rgba(0, 0, 0, 0.06);
-  --shadow-xl: 0 24rpx 64rpx rgba(0, 0, 0, 0.16), 0 12rpx 24rpx rgba(0, 0, 0, 0.08);
-
-  /* 内阴影 */
-  --shadow-inset: inset 0 2rpx 4rpx rgba(0, 0, 0, 0.06);
-
-  /* 彩色阴影 */
-  --shadow-primary: 0 8rpx 24rpx rgba(124, 139, 111, 0.15);
-
-  /* 动画时长 */
-  --duration-fast: 0.15s;
+  /* === 动画系统 === */
+  /* iOS 标准缓动 */
+  --ease-in: cubic-bezier(0.42, 0, 1, 1);
+  --ease-out: cubic-bezier(0, 0, 0.58, 1);
+  --ease-in-out: cubic-bezier(0.42, 0, 0.58, 1);
+  --ease-standard: cubic-bezier(0.4, 0.0, 0.2, 1);
+  
+  /* iOS 物理动画 (Spring) */
+  --ease-spring: cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  --ease-spring-soft: cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  
+  /* 时长 */
+  --duration-instant: 0.1s;
+  --duration-fast: 0.2s;
   --duration-normal: 0.3s;
-  --duration-slow: 0.5s;
+  --duration-slow: 0.4s;
+  --duration-slower: 0.6s;
 
-  /* 缓动函数 */
-  --ease-out: cubic-bezier(0.33, 1, 0.68, 1);
-  --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
-  --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+  /* === 字体系统 === */
+  /* iOS SF Pro 字重 */
+  --font-weight-regular: 400;
+  --font-weight-medium: 500;
+  --font-weight-semibold: 600;
+  --font-weight-bold: 700;
+  
+  /* iOS 字号系统 */
+  --font-size-caption2: 22rpx;    /* 11pt */
+  --font-size-caption1: 24rpx;    /* 12pt */
+  --font-size-footnote: 26rpx;    /* 13pt */
+  --font-size-subheadline: 30rpx; /* 15pt */
+  --font-size-callout: 32rpx;     /* 16pt */
+  --font-size-body: 34rpx;        /* 17pt */
+  --font-size-headline: 34rpx;    /* 17pt Semibold */
+  --font-size-title3: 40rpx;      /* 20pt */
+  --font-size-title2: 44rpx;      /* 22pt */
+  --font-size-title1: 56rpx;      /* 28pt */
+  --font-size-large-title: 68rpx; /* 34pt */
+
+  /* === Z-index 层级 === */
+  --z-base: 1;
+  --z-dropdown: 10;
+  --z-sticky: 100;
+  --z-fixed: 1000;
+  --z-modal-backdrop: 10000;
+  --z-modal: 10001;
+  --z-popover: 10002;
+  --z-toast: 10003;
 }
 
-/* 通用布局类 */
+/* === 通用布局 === */
 .container {
-  padding: var(--spacing-lg);
+  padding: var(--spacing-16) var(--spacing-16);
+  max-width: 750rpx;
+  margin: 0 auto;
 }
 
 .page {
   min-height: 100vh;
-  background-color: var(--color-bg);
+  background-color: var(--color-system-background);
 }
 
-/* 卡片样式 - 高级版 */
+/* === 卡片系统 (Apple Style) === */
 .card {
-  background: var(--color-card);
-  border-radius: var(--radius-md);
-  box-shadow: var(--shadow-sm);
-  border: 1px solid var(--color-border-light);
+  background: var(--color-tertiary-background);
+  border-radius: var(--radius-large);
   overflow: hidden;
   transition: all var(--duration-normal) var(--ease-out);
 }
 
-.card:hover {
+.card-interactive {
+  background: var(--color-tertiary-background);
+  border-radius: var(--radius-large);
+  overflow: hidden;
+  transition: transform var(--duration-fast) var(--ease-out),
+              box-shadow var(--duration-fast) var(--ease-out);
+  will-change: transform;
+}
+
+.card-interactive:active {
+  transform: scale(0.98);
+}
+
+.card-elevated {
+  background: var(--color-tertiary-background);
+  border-radius: var(--radius-large);
+  box-shadow: var(--shadow-2);
+  overflow: hidden;
+  transition: all var(--duration-normal) var(--ease-out);
+}
+
+.card-elevated:hover {
   transform: translateY(-4rpx);
-  box-shadow: var(--shadow-md);
+  box-shadow: var(--shadow-3);
 }
 
-.card-padding {
-  padding: var(--spacing-md);
+/* 毛玻璃卡片 (iOS Frosted Glass) */
+.card-frosted {
+  background: rgba(255, 255, 255, 0.72);
+  backdrop-filter: blur(var(--blur-medium)) saturate(180%);
+  -webkit-backdrop-filter: blur(var(--blur-medium)) saturate(180%);
+  border: 0.5px solid rgba(255, 255, 255, 0.8);
+  box-shadow: 0 8rpx 32rpx rgba(0, 0, 0, 0.08),
+              inset 0 0 0 0.5px rgba(255, 255, 255, 0.5);
+  overflow: hidden;
 }
 
-/* 玻璃态卡片 */
-.card-glass {
-  background: rgba(255, 255, 255, 0.7);
-  backdrop-filter: blur(20rpx) saturate(180%);
-  -webkit-backdrop-filter: blur(20rpx) saturate(180%);
-  border: 1px solid rgba(255, 255, 255, 0.3);
-  box-shadow: 0 8rpx 32rpx rgba(0, 0, 0, 0.08);
+/* === 字体排版 (iOS Text Styles) === */
+/* Large Title */
+.text-large-title {
+  font-size: var(--font-size-large-title);
+  font-weight: var(--font-weight-bold);
+  color: var(--color-label);
+  line-height: 1.2;
+  letter-spacing: -0.02em;
 }
 
-/* 渐变卡片 */
-.card-gradient {
-  background: var(--gradient-card);
-  border: none;
+/* Title 1 */
+.text-title1 {
+  font-size: var(--font-size-title1);
+  font-weight: var(--font-weight-semibold);
+  color: var(--color-label);
+  line-height: 1.25;
+  letter-spacing: -0.01em;
 }
 
-/* 标题样式 */
-.title-large {
-  font-size: 48rpx;
-  font-weight: 500;
-  color: var(--color-text-primary);
+/* Title 2 */
+.text-title2 {
+  font-size: var(--font-size-title2);
+  font-weight: var(--font-weight-semibold);
+  color: var(--color-label);
   line-height: 1.3;
 }
 
-.title-medium {
-  font-size: 36rpx;
-  font-weight: 500;
-  color: var(--color-text-primary);
+/* Title 3 */
+.text-title3 {
+  font-size: var(--font-size-title3);
+  font-weight: var(--font-weight-semibold);
+  color: var(--color-label);
+  line-height: 1.35;
+}
+
+/* Headline */
+.text-headline {
+  font-size: var(--font-size-headline);
+  font-weight: var(--font-weight-semibold);
+  color: var(--color-label);
   line-height: 1.4;
 }
 
-.title-small {
-  font-size: 32rpx;
-  font-weight: 500;
-  color: var(--color-text-primary);
-  line-height: 1.5;
+/* Body */
+.text-body {
+  font-size: var(--font-size-body);
+  font-weight: var(--font-weight-regular);
+  color: var(--color-label);
+  line-height: 1.47;
 }
 
-/* 正文样式 */
-.body-large {
-  font-size: 32rpx;
-  color: var(--color-text-secondary);
-  line-height: 1.6;
+/* Callout */
+.text-callout {
+  font-size: var(--font-size-callout);
+  font-weight: var(--font-weight-regular);
+  color: var(--color-label);
+  line-height: 1.4;
 }
 
-.body-medium {
-  font-size: 28rpx;
-  color: var(--color-text-secondary);
-  line-height: 1.6;
+/* Subheadline */
+.text-subheadline {
+  font-size: var(--font-size-subheadline);
+  font-weight: var(--font-weight-regular);
+  color: var(--color-secondary-label);
+  line-height: 1.4;
 }
 
-.body-small {
-  font-size: 24rpx;
-  color: var(--color-text-tertiary);
-  line-height: 1.5;
+/* Footnote */
+.text-footnote {
+  font-size: var(--font-size-footnote);
+  font-weight: var(--font-weight-regular);
+  color: var(--color-secondary-label);
+  line-height: 1.3;
 }
 
-/* 英文副标题 */
-.subtitle-en {
-  font-size: 24rpx;
-  color: var(--color-text-tertiary);
-  letter-spacing: 0.5px;
-  text-transform: capitalize;
-  margin-top: 4rpx;
+/* Caption 1 */
+.text-caption1 {
+  font-size: var(--font-size-caption1);
+  font-weight: var(--font-weight-regular);
+  color: var(--color-tertiary-label);
+  line-height: 1.3;
+  letter-spacing: 0.01em;
 }
 
-/* 按钮样式 - 高级版 */
+/* Caption 2 */
+.text-caption2 {
+  font-size: var(--font-size-caption2);
+  font-weight: var(--font-weight-regular);
+  color: var(--color-tertiary-label);
+  line-height: 1.3;
+  letter-spacing: 0.02em;
+}
+
+/* === 按钮系统 (iOS Style) === */
+/* 填充按钮 (Filled Button) */
 .btn {
-  position: relative;
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  padding: 24rpx 48rpx;
-  border-radius: var(--radius-md);
-  font-size: 28rpx;
-  font-weight: 500;
+  height: 88rpx;
+  padding: 0 var(--spacing-24);
+  border-radius: var(--radius-medium);
+  font-size: var(--font-size-body);
+  font-weight: var(--font-weight-semibold);
   border: none;
-  cursor: pointer;
-  transition: all var(--duration-normal) var(--ease-out);
-  overflow: hidden;
+  transition: opacity var(--duration-fast) var(--ease-out),
+              transform var(--duration-fast) var(--ease-out);
+  will-change: opacity, transform;
+  -webkit-tap-highlight-color: transparent;
 }
 
-.btn::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: rgba(255, 255, 255, 0.1);
-  opacity: 0;
-  transition: opacity var(--duration-fast);
-}
-
-.btn:active::before {
-  opacity: 1;
-}
-
-.btn-primary {
-  background: var(--gradient-primary);
-  color: #ffffff;
-  box-shadow: var(--shadow-primary);
-}
-
-.btn-primary:active {
+.btn:active {
+  opacity: 0.6;
   transform: scale(0.97);
-  box-shadow: var(--shadow-sm);
 }
 
-.btn-secondary {
-  background-color: transparent;
-  color: var(--color-primary);
-  border: 2rpx solid var(--color-border);
-  box-shadow: var(--shadow-xs);
+/* Filled Button - Primary (Tint Color) */
+.btn-primary {
+  background-color: var(--color-tint-custom);
+  color: #ffffff;
+}
+
+/* Filled Button - iOS Green */
+.btn-tint {
+  background-color: var(--color-tint);
+  color: #ffffff;
+}
+
+/* Filled Button - Gray */
+.btn-gray {
+  background-color: var(--color-fill);
+  color: var(--color-label);
+}
+
+/* Tinted Button (半透明背景) */
+.btn-tinted {
+  background-color: rgba(124, 139, 111, 0.15);
+  color: var(--color-tint-custom);
+}
+
+.btn-tinted:active {
+  background-color: rgba(124, 139, 111, 0.25);
+}
+
+/* Plain Button (无背景) */
+.btn-plain {
+  background: transparent;
+  color: var(--color-tint-custom);
+  padding: 0 var(--spacing-16);
+}
+
+/* 按钮尺寸 */
+.btn-large {
+  height: 100rpx;
+  width: 100%;
+  font-size: var(--font-size-headline);
+}
+
+.btn-small {
+  height: 64rpx;
+  padding: 0 var(--spacing-16);
+  font-size: var(--font-size-subheadline);
 }
 
 .btn-secondary:active {
