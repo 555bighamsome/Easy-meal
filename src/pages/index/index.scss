@@ -1,0 +1,159 @@
+.index-page {
+  min-height: 100vh;
+  background-color: var(--color-bg);
+}
+
+.index-scroll {
+  height: 100vh;
+  padding-bottom: 160rpx; /* 为底部操作栏留空间 */
+}
+
+.index-header {
+  padding: var(--spacing-xl) 0 var(--spacing-md) 0;
+}
+
+.index-title {
+  display: block;
+  font-size: 56rpx;
+  font-weight: 500;
+  color: var(--color-text-primary);
+  margin-bottom: 8rpx;
+}
+
+.index-subtitle {
+  display: block;
+  font-size: 24rpx;
+  color: var(--color-text-tertiary);
+  letter-spacing: 0.5px;
+}
+
+/* 推荐菜谱区域 */
+.recipes-section {
+  margin-top: var(--spacing-xl);
+}
+
+.section-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  margin-bottom: var(--spacing-lg);
+}
+
+.section-title {
+  display: block;
+  font-size: 36rpx;
+  font-weight: 500;
+  color: var(--color-text-primary);
+  margin-bottom: 4rpx;
+}
+
+.section-subtitle {
+  display: block;
+  font-size: 22rpx;
+  color: var(--color-text-tertiary);
+  letter-spacing: 0.5px;
+}
+
+.selected-count {
+  font-size: 24rpx;
+  color: var(--color-secondary);
+  background-color: rgba(124, 139, 111, 0.1);
+  padding: 8rpx 16rpx;
+  border-radius: var(--radius-full);
+}
+
+.recipes-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: var(--spacing-md);
+}
+
+.recipe-wrapper {
+  position: relative;
+  transition: all 0.3s ease;
+}
+
+.recipe-selected {
+  .recipe-card {
+    border: 2px solid var(--color-secondary);
+    box-shadow: var(--shadow-md);
+  }
+}
+
+.recipe-check {
+  position: absolute;
+  top: var(--spacing-sm);
+  right: var(--spacing-sm);
+  width: 48rpx;
+  height: 48rpx;
+  border-radius: 50%;
+  background-color: var(--color-secondary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: var(--shadow-md);
+}
+
+.recipe-check-icon {
+  color: #ffffff;
+  font-size: 28rpx;
+  font-weight: bold;
+}
+
+/* 空状态 */
+.empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 400rpx;
+  margin-top: var(--spacing-xl);
+}
+
+.empty-state-emoji {
+  font-size: 96rpx;
+  margin-bottom: var(--spacing-md);
+}
+
+.empty-state-text {
+  font-size: 28rpx;
+  color: var(--color-text-tertiary);
+}
+
+/* 底部操作栏 */
+.bottom-bar {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background-color: #ffffff;
+  border-top: 1px solid var(--color-border);
+  padding: var(--spacing-md) var(--spacing-lg);
+  box-shadow: 0 -4rpx 16rpx rgba(0, 0, 0, 0.04);
+  z-index: 100;
+}
+
+.bottom-bar-content {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.bottom-bar-title {
+  display: block;
+  font-size: 28rpx;
+  font-weight: 500;
+  color: var(--color-text-primary);
+  margin-bottom: 4rpx;
+}
+
+.bottom-bar-subtitle {
+  display: block;
+  font-size: 22rpx;
+  color: var(--color-text-tertiary);
+}
+
+.bottom-bar .btn {
+  padding: 20rpx 40rpx;
+  font-size: 28rpx;
+}

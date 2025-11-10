@@ -1,0 +1,34 @@
+.discover-page {
+  min-height: 100vh;
+  background-color: var(--color-bg);
+}
+
+.discover-scroll {
+  height: 100vh;
+}
+
+.discover-header {
+  padding: var(--spacing-xl) 0 var(--spacing-lg) 0;
+}
+
+.discover-title {
+  display: block;
+  font-size: 48rpx;
+  font-weight: 500;
+  color: var(--color-text-primary);
+  margin-bottom: 8rpx;
+}
+
+.discover-subtitle {
+  display: block;
+  font-size: 24rpx;
+  color: var(--color-text-tertiary);
+  letter-spacing: 0.5px;
+}
+
+.recipes-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: var(--spacing-md);
+  padding-bottom: var(--spacing-2xl);
+}
