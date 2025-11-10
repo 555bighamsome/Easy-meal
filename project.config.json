@@ -4,7 +4,7 @@
   "description": "智能菜谱与采购清单小程序",
   "appid": "touristappid",
   "setting": {
-    "urlCheck": true,
+    "urlCheck": false,
     "es6": false,
     "enhance": false,
     "compileHotReLoad": false,
