@@ -18,37 +18,77 @@ page {
   background-color: #f5f5f5;
 }
 
-/* 设计系统变量 */
+/* 设计系统变量 - 高级版 */
 :root {
-  /* 颜色 */
-  --color-primary: #1a1a1a; /* 主色-深灰墨 */
-  --color-secondary: #7c8b6f; /* 品牌色-橄榄绿 */
-  --color-bg: #f5f5f5; /* 背景色 */
-  --color-card: #ffffff; /* 卡片背景 */
-  --color-border: #e8e8e8; /* 边框色 */
+  /* 颜色系统 - 更精致的色彩 */
+  --color-primary: #1a1a1a;
+  --color-secondary: #7c8b6f; /* 橄榄绿 */
+  --color-accent: #a8b89f; /* 浅橄榄绿 */
 
-  --color-text-primary: rgba(26, 26, 26, 0.9); /* 标题文字 */
-  --color-text-secondary: rgba(74, 74, 74, 0.7); /* 正文文字 */
-  --color-text-tertiary: rgba(158, 158, 158, 0.5); /* 辅助文字 */
+  /* 背景渐变 - 微妙的层次感 */
+  --color-bg: #fafafa;
+  --color-bg-secondary: #f5f5f5;
+  --color-card: #ffffff;
+  --color-card-hover: #fcfcfc;
 
-  /* 间距 (8pt网格) */
+  /* 边框和分割线 */
+  --color-border: rgba(0, 0, 0, 0.06);
+  --color-border-light: rgba(0, 0, 0, 0.04);
+  --color-divider: rgba(0, 0, 0, 0.08);
+
+  /* 文字层次 - 更细腻的透明度 */
+  --color-text-primary: rgba(26, 26, 26, 0.92);
+  --color-text-secondary: rgba(60, 60, 60, 0.75);
+  --color-text-tertiary: rgba(120, 120, 120, 0.55);
+  --color-text-disabled: rgba(160, 160, 160, 0.4);
+
+  /* 蒙版和遮罩 */
+  --color-overlay: rgba(0, 0, 0, 0.4);
+  --color-overlay-light: rgba(0, 0, 0, 0.2);
+
+  /* 品牌色渐变 */
+  --gradient-primary: linear-gradient(135deg, #7c8b6f 0%, #9aa88c 100%);
+  --gradient-card: linear-gradient(180deg, #ffffff 0%, #fafafa 100%);
+
+  /* 间距系统 (8pt网格) */
   --spacing-xs: 8rpx;
   --spacing-sm: 16rpx;
   --spacing-md: 24rpx;
   --spacing-lg: 32rpx;
   --spacing-xl: 48rpx;
   --spacing-2xl: 64rpx;
+  --spacing-3xl: 96rpx;
 
-  /* 圆角 */
-  --radius-sm: 8rpx;
+  /* 圆角系统 */
+  --radius-xs: 6rpx;
+  --radius-sm: 12rpx;
   --radius-md: 16rpx;
   --radius-lg: 24rpx;
+  --radius-xl: 32rpx;
   --radius-full: 9999rpx;
 
-  /* 阴影 */
-  --shadow-sm: 0 4rpx 16rpx rgba(0, 0, 0, 0.04);
-  --shadow-md: 0 8rpx 32rpx rgba(0, 0, 0, 0.08);
-  --shadow-lg: 0 16rpx 48rpx rgba(0, 0, 0, 0.12);
+  /* 阴影系统 - 更自然的光影 */
+  --shadow-xs: 0 2rpx 8rpx rgba(0, 0, 0, 0.04);
+  --shadow-sm: 0 4rpx 12rpx rgba(0, 0, 0, 0.06), 0 2rpx 4rpx rgba(0, 0, 0, 0.02);
+  --shadow-md: 0 8rpx 24rpx rgba(0, 0, 0, 0.08), 0 4rpx 8rpx rgba(0, 0, 0, 0.04);
+  --shadow-lg: 0 16rpx 40rpx rgba(0, 0, 0, 0.12), 0 8rpx 16rpx rgba(0, 0, 0, 0.06);
+  --shadow-xl: 0 24rpx 64rpx rgba(0, 0, 0, 0.16), 0 12rpx 24rpx rgba(0, 0, 0, 0.08);
+
+  /* 内阴影 */
+  --shadow-inset: inset 0 2rpx 4rpx rgba(0, 0, 0, 0.06);
+
+  /* 彩色阴影 */
+  --shadow-primary: 0 8rpx 24rpx rgba(124, 139, 111, 0.15);
+
+  /* 动画时长 */
+  --duration-fast: 0.15s;
+  --duration-normal: 0.3s;
+  --duration-slow: 0.5s;
+
+  /* 缓动函数 */
+  --ease-out: cubic-bezier(0.33, 1, 0.68, 1);
+  --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
+  --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 
 /* 通用布局类 */
@@ -61,16 +101,38 @@ page {
   background-color: var(--color-bg);
 }
 
-/* 卡片样式 */
+/* 卡片样式 - 高级版 */
 .card {
-  background-color: var(--color-card);
+  background: var(--color-card);
   border-radius: var(--radius-md);
   box-shadow: var(--shadow-sm);
+  border: 1px solid var(--color-border-light);
   overflow: hidden;
+  transition: all var(--duration-normal) var(--ease-out);
+}
+
+.card:hover {
+  transform: translateY(-4rpx);
+  box-shadow: var(--shadow-md);
 }
 
 .card-padding {
   padding: var(--spacing-md);
+}
+
+/* 玻璃态卡片 */
+.card-glass {
+  background: rgba(255, 255, 255, 0.7);
+  backdrop-filter: blur(20rpx) saturate(180%);
+  -webkit-backdrop-filter: blur(20rpx) saturate(180%);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  box-shadow: 0 8rpx 32rpx rgba(0, 0, 0, 0.08);
+}
+
+/* 渐变卡片 */
+.card-gradient {
+  background: var(--gradient-card);
+  border: none;
 }
 
 /* 标题样式 */
@@ -123,44 +185,77 @@ page {
   margin-top: 4rpx;
 }
 
-/* 按钮样式 */
+/* 按钮样式 - 高级版 */
 .btn {
+  position: relative;
   display: inline-flex;
   align-items: center;
   justify-content: center;
   padding: 24rpx 48rpx;
-  border-radius: var(--radius-sm);
+  border-radius: var(--radius-md);
   font-size: 28rpx;
   font-weight: 500;
-  transition: all 0.3s ease;
   border: none;
   cursor: pointer;
+  transition: all var(--duration-normal) var(--ease-out);
+  overflow: hidden;
+}
+
+.btn::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(255, 255, 255, 0.1);
+  opacity: 0;
+  transition: opacity var(--duration-fast);
+}
+
+.btn:active::before {
+  opacity: 1;
 }
 
 .btn-primary {
-  background-color: var(--color-primary);
+  background: var(--gradient-primary);
   color: #ffffff;
+  box-shadow: var(--shadow-primary);
 }
 
 .btn-primary:active {
-  opacity: 0.85;
-  transform: scale(0.98);
+  transform: scale(0.97);
+  box-shadow: var(--shadow-sm);
 }
 
 .btn-secondary {
   background-color: transparent;
   color: var(--color-primary);
-  border: 1px solid var(--color-border);
+  border: 2rpx solid var(--color-border);
+  box-shadow: var(--shadow-xs);
 }
 
 .btn-secondary:active {
-  background-color: rgba(0, 0, 0, 0.03);
+  background-color: var(--color-bg);
+  border-color: var(--color-divider);
 }
 
 .btn-large {
   width: 100%;
   padding: 32rpx;
   font-size: 32rpx;
+  border-radius: var(--radius-lg);
+}
+
+/* 幽灵按钮 */
+.btn-ghost {
+  background: rgba(124, 139, 111, 0.08);
+  color: var(--color-secondary);
+  border: none;
+}
+
+.btn-ghost:active {
+  background: rgba(124, 139, 111, 0.15);
 }
 
 /* 分割线 */
